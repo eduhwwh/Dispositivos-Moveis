@@ -1,31 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Casa Mal-Assombrada</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Halloween Memory Game</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🏚️ Acenda a Vela sem Ser Visto 🕯️</h1>
+  <div class="container">
+    <h1>🎃 Halloween Memory Game 👻</h1>
+    <p>Teste sua memória... se tiver coragem!</p>
+    <button id="start-btn">Iniciar Jogo</button>
+  </div>
 
- <div id="jogo">
-  <div id="labirinto"></div>
-  <div id="player">🧍‍♀️</div>
-  <div id="fantasma">💀</div>
-  <div id="vela">🕯️</div>
-</div>
-<p id="mensagem">Encontre a vela sem ser visto...</p>
-
-
-
-  <p id="mensagem">Use as setas para se mover...</p>
-  <p>Pontos: <span id="pontos">0</span></p>
-
-  <audio id="somPassos" src="sounds/passos.mp3"></audio>
-  <audio id="somVela" src="sounds/vela.mp3"></audio>
-  <audio id="somSusto" src="sounds/susto.mp3"></audio>
-  <audio id="somFundo" src="sounds/fundo.mp3" loop></audio>
-
-  <script src="script.js"></script>
+  <script>
+    document.getElementById('start-btn').addEventListener('click', () => {
+      window.location.href = 'game.html';
+    });
+  </script>
 </body>
 </html>

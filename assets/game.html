@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jogo da Memória - Halloween</title>
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body>
+  <h1>🎃 Jogo da Memória - Halloween 👻</h1>
+  <div id="game-board"></div>
+
+  <div class="controls">
+    <button id="restart-btn">Reiniciar</button>
+    <button id="home-btn">Voltar ao Início</button>
+  </div>
+
+  <script src="game.js"></script>
+  <script>
+    document.getElementById('home-btn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
