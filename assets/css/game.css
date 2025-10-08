@@ -1,0 +1,227 @@
+/* ======= ESTILO GERAL ======= */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+body {
+  background-color: #1a001f;
+  color: #fff;
+  font-family: 'Creepster', cursive;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #ff7518;
+  text-shadow: 0 0 10px #ff7518;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #ffb347;
+  text-shadow: 0 0 8px #ffb347;
+  margin-top: 0;
+}
+
+/* ======= TABULEIRO ======= */
+#hub{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#game-board {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  gap: 10px;
+  margin-top: 30px;
+  perspective: 1000px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ======= CARTAS ======= */
+.card {
+  width: 100px;
+  height: 100px;
+  background-color: #3a003a;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  box-shadow: 0 0 15px rgba(255, 117, 24, 0.3);
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card .front,
+.card .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card .back {
+  background-color: #3a003a;
+  color: #ff7518;
+  font-size: 2rem;
+  transform: rotateY(0deg);
+  box-shadow: inset 0 0 10px #ff7518;
+}
+
+.card .front {
+  transform: rotateY(180deg);
+  background-color: #ff7518;
+  color: #1a001f;
+  font-size: 2.4rem;
+  box-shadow: inset 0 0 10px #1a001f;
+}
+
+.card.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+
+/* ======= RESPONSIVIDADE ======= */
+@media (max-width: 600px) {
+  #game-board {
+    gap: 8px;
+  }
+
+  .card {
+    width: 80px;
+    height: 80px;
+    font-size: 1.8rem;
+  }
+
+  .controls button {
+    font-size: 0.9rem;
+    padding: 8px 18px;
+  }
+}
+
+#floatingConfig {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: orange;
+  color: #1b1b1b;
+  border: none;
+  font-size: 1.5rem;
+  padding: 12px 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 999;
+}
+
+#floatingConfig:hover {
+  background-color: #ffb347;
+  transform: scale(1.1);
+}
+#floatingConfig {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: orange;
+  color: #1b1b1b;
+  border: none;
+  font-size: 1.5rem;
+  padding: 12px 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 999;
+}
+
+#floatingConfig:hover {
+  background-color: #ffb347;
+  transform: scale(1.1);
+}
+
+
+/* ======= BOTÕES INFERIORES (CONFIG MENU) ======= */
+#config-menu {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+#config-menu button {
+  background: linear-gradient(145deg, #3a003a, #ff7518);
+  color: #fff;
+  border: 2px solid #ff7518;
+  font-family: 'Creepster', cursive;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 117, 24, 0.4);
+  text-shadow: 0 0 5px #000;
+  transition: all 0.25s ease-in-out;
+}
+
+#config-menu button:hover {
+  background: linear-gradient(145deg, #ff7518, #ffb347);
+  color: #1a001f;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 20px #ff7518, 0 0 40px #ffb347;
+}
+
+#config-menu button:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 5px #ff7518;
+}
+
+
+/* ======= ANIMAÇÕES HALLOWEEN ======= */
+#config-menu button {
+  animation: halloweenGlow 2.5s infinite alternate;
+}
+
+#config-menu button:hover {
+  animation: shake 0.3s infinite;
+}
+
+@keyframes halloweenGlow {
+  0% { box-shadow: 0 0 10px #ff7518; }
+  100% { box-shadow: 0 0 25px #ffb347; }
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  20% { transform: translate(-1px, -2px) rotate(-1deg); }
+  40% { transform: translate(-3px, 0px) rotate(1deg); }
+  60% { transform: translate(3px, 2px) rotate(0deg); }
+  80% { transform: translate(1px, -1px) rotate(1deg); }
+  100% { transform: translate(-1px, 2px) rotate(-1deg); }
+}
+
+

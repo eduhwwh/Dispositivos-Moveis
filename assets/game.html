@@ -3,37 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jogo da Memória - Halloween</title>
-  <link rel="stylesheet" href="game.css" />
+  <title>Sombras da Memória</title>
+  <link rel="stylesheet" href="./css/game.css" />
 </head>
 <body>
-  <h1>🎃 Jogo da Memória - Halloween 👻</h1>
-  <h2 id="level-display"></h2>
+  <h1>🎃 Sombras da Memória 👻</h1>
+  <h2 id="level-display">Nível 1</h2>
 
   <div id="hub">
-      <div id="timer">⏳ Tempo: 60s</div>
-      <div id="attempts-display">Tentativas: </div>
+    <div id="timer" style="display: none;">⏳ Tempo: 60s</div>
+    <div id="attempts-display">Tentativas: 0</div>
   </div>
 
   <div id="game-board"></div>
 
-  <div class="controls">
-    <button id="restart-btn">Reiniciar</button>
-    <button id="home-btn">Voltar</button>
-  </div>
-
   <p id="message"></p>
 
   <!-- Sons -->
-  <audio id="sound-acerto" src="acerto.mp3"></audio>
-  <audio id="sound-erro" src="erro.mp3"></audio>
-  <audio id="sound-vitoria" src="/assets/sounds/risada-maléfica.mp3"></audio>
+  <audio id="sound-acerto" src="./sounds/acerto.mp3"></audio>
+  <audio id="sound-erro" src="./sounds/erro.mp3"></audio>
+  <audio id="sound-vitoria" src="./sounds/risada-maléfica.mp3"></audio>
 
-  <script src="game.js"></script>
-  <script>
-    document.getElementById('home-btn').addEventListener('click', () => {
-      window.location.href = 'index.html';
-    });
-  </script>
+  <!-- Botão de reinício -->
+  <button id="restart-btn" class="botao-restart">🔄 Reiniciar</button>
+
+  <!-- Botão flutuante de configuração -->
+  <button id="floatingConfig" class="floating-config">⚙️</button>
+
+  <script src="./js/game.js"></script>
 </body>
 </html>

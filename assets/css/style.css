@@ -15,7 +15,7 @@ body {
 
 h1 {
   color: #ff7518;
-  text-shadow: 0 0 10px #ff7518, 0 0 20px #ff7518;
+  text-shadow: 0 0 2px #ff7518, 0 0 20px #ff7518;
   font-size: 3rem;
   margin-bottom: 20px;
 }
@@ -23,7 +23,7 @@ h1 {
 h2 {
   font-size: 1.8rem;
   color: #ffb347;
-  text-shadow: 0 0 10px #ffb347;
+  text-shadow: 0 0 2px #ffb347;
   margin-bottom: 40px;
 }
 
