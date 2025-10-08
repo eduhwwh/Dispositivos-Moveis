@@ -7,34 +7,86 @@ body {
   text-align: center;
   margin: 0;
   padding: 50px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 h1 {
   color: #ff7518;
-  text-shadow: 0 0 10px #ff7518;
+  text-shadow: 0 0 10px #ff7518, 0 0 20px #ff7518;
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #ffb347;
+  text-shadow: 0 0 10px #ffb347;
+  margin-bottom: 40px;
 }
 
 .levels {
-  margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 25px;
 }
 
 .level-btn {
   background-color: #ff7518;
   border: none;
   color: white;
-  font-size: 1.2rem;
-  padding: 15px 30px;
+  font-size: 1.4rem;
+  padding: 18px 35px;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.3s;
-  box-shadow: 0 0 10px #ff7518;
+  transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s;
+  box-shadow: 0 0 15px #ff7518;
+  animation: pulsar 2s infinite alternate, tremer 4s infinite ease-in-out;
 }
 
 .level-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 20px #ffb347;
+  background-color: #ff944d;
+  box-shadow: 0 0 30px #ffb347, 0 0 50px #ff7518;
+}
+
+/* ✨ Efeito de brilho pulsante */
+@keyframes pulsar {
+  0% {
+    box-shadow: 0 0 10px #ff7518;
+  }
+  100% {
+    box-shadow: 0 0 25px #ffb347, 0 0 40px #ff7518;
+  }
+}
+
+/* 👻 Efeito de tremor leve */
+@keyframes tremer {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 30px 10px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .level-btn {
+    font-size: 1.1rem;
+    padding: 12px 25px;
+  }
 }

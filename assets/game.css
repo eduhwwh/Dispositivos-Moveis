@@ -27,6 +27,14 @@ h2 {
 }
 
 /* ======= TABULEIRO ======= */
+#hub{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+
 #game-board {
   display: grid;
   justify-content: center;

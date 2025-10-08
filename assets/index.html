@@ -8,21 +8,19 @@
 </head>
 <body>
   <h1>👻 Jogo da Memória - Halloween 🎃</h1>
-  <h2>Escolha o nível de dificuldade</h2>
+  <h2>Escolha o modo de jogo</h2>
 
   <div class="levels">
-    <button class="level-btn" data-level="1">🎃 Fácil</button>
-    <button class="level-btn" data-level="3">🧙 Médio</button>
-    <button class="level-btn" data-level="5">💀 Difícil</button>
-    <button class="level-btn" data-level="8">🕸️ Insano</button>
+    <button class="level-btn" data-mode="normal">🃏 Modo Normal</button>
+    <button class="level-btn" data-mode="tempo">🕰️ Modo com Tempo</button>
   </div>
 
   <script>
     const buttons = document.querySelectorAll('.level-btn');
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const level = btn.dataset.level;
-        localStorage.setItem('nivelEscolhido', level);
+        const modo = btn.dataset.mode;
+        localStorage.setItem('modoJogo', modo);
         window.location.href = 'game.html';
       });
     });

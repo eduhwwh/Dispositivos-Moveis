@@ -9,6 +9,12 @@
 <body>
   <h1>🎃 Jogo da Memória - Halloween 👻</h1>
   <h2 id="level-display"></h2>
+
+  <div id="hub">
+      <div id="timer">⏳ Tempo: 60s</div>
+      <div id="attempts-display">Tentativas: </div>
+  </div>
+
   <div id="game-board"></div>
 
   <div class="controls">
@@ -21,7 +27,7 @@
   <!-- Sons -->
   <audio id="sound-acerto" src="acerto.mp3"></audio>
   <audio id="sound-erro" src="erro.mp3"></audio>
-  <audio id="sound-vitoria" src="vitoria.mp3"></audio>
+  <audio id="sound-vitoria" src="/assets/sounds/risada-maléfica.mp3"></audio>
 
   <script src="game.js"></script>
   <script>

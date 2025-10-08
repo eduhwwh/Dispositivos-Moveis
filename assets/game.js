@@ -1,7 +1,11 @@
+// game.js (substituir completo)
 const board = document.getElementById('game-board');
 const restartBtn = document.getElementById('restart-btn');
 const levelDisplay = document.getElementById('level-display');
 const message = document.getElementById('message');
+
+const timerDisplay = document.getElementById('timer');           // precisa existir no HTML
+const attemptsDisplay = document.getElementById('attempts-display'); // precisa existir no HTML
 
 const soundAcerto = document.getElementById('sound-acerto');
 const soundErro = document.getElementById('sound-erro');
@@ -11,33 +15,35 @@ let level = 1;
 let cards = [];
 let flippedCards = [];
 let lockBoard = false;
-let tempoMostra = 5000;
+let tempoMostra = 3000; // 3 segundos conforme pedido
+let tempoRestante = 60;
+let timer = null;
+let tentativas = 0;
+
+// lê o modo definido na index (localStorage: 'modoJogo' === 'tempo' ou 'normal')
+const modoComTempo = localStorage.getItem('modoJogo') === 'tempo';
 
 function criarCartas() {
   board.innerHTML = "";
   cards = [];
   flippedCards = [];
   lockBoard = false;
+  tentativas = 0;
+  attemptsDisplay.textContent = `Tentativas: ${tentativas}`;
 
-  // 🎃 Lista com muitos emojis de Halloween
   const emojis = [
-    "🎃", "👻", "🕷️", "🦇", "🍬", "🕸️", "💀", "🧙‍♀️", "🧛‍♂️", "🧟‍♂️",
-    "🧌", "🪄", "🩸", "🪦", "🕯️", "☠️", "🧹", "🦴", "🧠", "🌕",
-    "🌑", "🧤", "🍭", "🧛‍♀️", "🔮", "🧞‍♂️", "🧿", "🧯", "🩻", "🪬"
+    "🎃","👻","🕷️","🦇","🍬","🕸️","💀","🧙‍♀️","🧛‍♂️","🧟‍♂️",
+    "🧌","🪄","🩸","🪦","🕯️","☠️","🧹","🦴","🧠","🌕",
+    "🌑","🧤","🍭","🧛‍♀️","🔮","🧞‍♂️","🧿","🧯","🩻","🪬"
   ];
 
-  // 🔸 Aumenta o número de pares conforme o nível
   let qtdPares = 4 + (level - 1) * 2;
   if (qtdPares > emojis.length) qtdPares = emojis.length;
 
-  // Seleciona os emojis e duplica para formar pares
   const selecionados = emojis.slice(0, qtdPares);
   const cartas = [...selecionados, ...selecionados];
-
-  // 🔸 Embaralha as cartas
   cartas.sort(() => 0.5 - Math.random());
 
-  // 🔸 Calcula a grade ideal (sem buracos)
   const total = cartas.length;
   let colunas = Math.ceil(Math.sqrt(total));
   let linhas = Math.ceil(total / colunas);
@@ -49,7 +55,6 @@ function criarCartas() {
   board.style.gridTemplateColumns = `repeat(${colunas}, 100px)`;
   board.style.gridTemplateRows = `repeat(${linhas}, 100px)`;
 
-  // 🔸 Cria as cartas no tabuleiro
   cartas.forEach((emoji) => {
     const card = document.createElement("div");
     card.classList.add("card");
@@ -64,13 +69,26 @@ function criarCartas() {
   });
 
   atualizarNivel();
-  mostrarTodasTemporariamente();
+
+  // mostra por X ms e só depois inicia, se estiver no modo com tempo
+  mostrarTodasTemporariamente(() => {
+    // callback executado após o reveal
+    if (modoComTempo) {
+      iniciarTimer(); // inicia APÓS as 3s
+      timerDisplay.style.display = 'inline-block';
+    } else {
+      // esconde timer no modo normal
+      timerDisplay.style.display = 'none';
+      clearInterval(timer);
+    }
+  });
 }
 
-function mostrarTodasTemporariamente() {
+function mostrarTodasTemporariamente(callback) {
   cards.forEach((card) => card.classList.add("flipped"));
   setTimeout(() => {
     cards.forEach((card) => card.classList.remove("flipped"));
+    if (typeof callback === 'function') callback();
   }, tempoMostra);
 }
 
@@ -80,7 +98,12 @@ function virarCarta() {
   this.classList.add("flipped");
   flippedCards.push(this);
 
-  if (flippedCards.length === 2) checarPar();
+  if (flippedCards.length === 2) {
+    // conta tentativa por par virado
+    tentativas++;
+    attemptsDisplay.textContent = `Tentativas: ${tentativas}`;
+    checarPar();
+  }
 }
 
 function checarPar() {
@@ -88,18 +111,13 @@ function checarPar() {
   const match = c1.dataset.emoji === c2.dataset.emoji;
 
   if (match) {
-    soundAcerto.currentTime = 0;
-    soundAcerto.play();
-
+    soundAcerto && soundAcerto.play();
     c1.classList.add("matched");
     c2.classList.add("matched");
     flippedCards = [];
-
     verificarVitoria();
   } else {
-    soundErro.currentTime = 0;
-    soundErro.play();
-
+    soundErro && soundErro.play();
     lockBoard = true;
     setTimeout(() => {
       c1.classList.remove("flipped");
@@ -113,8 +131,9 @@ function checarPar() {
 function verificarVitoria() {
   const venceu = cards.every((c) => c.classList.contains("matched"));
   if (venceu) {
+    clearInterval(timer);
     setTimeout(() => {
-      soundVitoria.play();
+      soundVitoria && soundVitoria.play();
       mostrarMensagem(`🕯️ Nível ${level} completo!`);
       proximoNivel();
     }, 700);
@@ -128,19 +147,56 @@ function mostrarMensagem(texto) {
 }
 
 function proximoNivel() {
+  clearInterval(timer);
   level++;
   tempoMostra = Math.max(2000, tempoMostra - 500);
-  setTimeout(criarCartas, 2500);
+  tempoRestante = 60;
+  setTimeout(criarCartas, 1500);
 }
 
 function atualizarNivel() {
   levelDisplay.textContent = `Nível ${level}`;
 }
 
+// reiniciar
 restartBtn.addEventListener("click", () => {
   level = 1;
-  tempoMostra = 5000;
+  tempoMostra = 3000;
+  tempoRestante = 60;
+  clearInterval(timer);
   criarCartas();
 });
 
-criarCartas();
+// TIMER — modo com tempo
+function iniciarTimer() {
+  clearInterval(timer);
+  tempoRestante = 60;
+  timerDisplay.textContent = `⏳ Tempo: ${tempoRestante}s`;
+
+  timer = setInterval(() => {
+    tempoRestante--;
+    timerDisplay.textContent = `⏳ Tempo: ${tempoRestante}s`;
+    if (tempoRestante <= 0) {
+      clearInterval(timer);
+      revelarCartas();
+      encerrarJogoPorTempo();
+    }
+  }, 1000);
+}
+
+function revelarCartas() {
+  cards.forEach((card) => card.classList.add("flipped"));
+}
+
+function encerrarJogoPorTempo() {
+  lockBoard = true;
+  mostrarMensagem(`⏰ Tempo esgotado! Tentativas: ${tentativas}`);
+  // aqui você pode mostrar também um detalhamento ou botões (reiniciar, voltar)
+}
+
+// inicializa
+document.addEventListener('DOMContentLoaded', () => {
+  // se o index não definiu modo, assume normal
+  // (modoComTempo já foi calculado no topo a partir do localStorage)
+  criarCartas();
+});
