@@ -3,19 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Halloween Memory Game</title>
+  <title>Jogo da Memória - Halloween 🎃</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>🎃 Halloween Memory Game 👻</h1>
-    <p>Teste sua memória... se tiver coragem!</p>
-    <button id="start-btn">Iniciar Jogo</button>
+  <h1>👻 Jogo da Memória - Halloween 🎃</h1>
+  <h2>Escolha o nível de dificuldade</h2>
+
+  <div class="levels">
+    <button class="level-btn" data-level="1">🎃 Fácil</button>
+    <button class="level-btn" data-level="3">🧙 Médio</button>
+    <button class="level-btn" data-level="5">💀 Difícil</button>
+    <button class="level-btn" data-level="8">🕸️ Insano</button>
   </div>
 
   <script>
-    document.getElementById('start-btn').addEventListener('click', () => {
-      window.location.href = 'game.html';
+    const buttons = document.querySelectorAll('.level-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const level = btn.dataset.level;
+        localStorage.setItem('nivelEscolhido', level);
+        window.location.href = 'game.html';
+      });
     });
   </script>
 </body>

@@ -1,51 +1,40 @@
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background: radial-gradient(circle at top, #250025 0%, #0b0010 100%);
-  color: #fff;
-  font-family: 'Creepster', cursive;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  overflow: hidden;
-}
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
 
-.container {
-  animation: fadeIn 2s ease;
+body {
+  background-color: #1a001f;
+  color: white;
+  font-family: 'Creepster', cursive;
+  text-align: center;
+  margin: 0;
+  padding: 50px;
 }
 
 h1 {
-  font-size: 2.5rem;
   color: #ff7518;
-  text-shadow: 0 0 15px #ff7518;
+  text-shadow: 0 0 10px #ff7518;
 }
 
-p {
-  font-size: 1.2rem;
-  color: #f2dede;
-  margin-bottom: 40px;
+.levels {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
-button {
+.level-btn {
   background-color: #ff7518;
   border: none;
   color: white;
-  font-size: 1.5rem;
-  padding: 15px 40px;
-  border-radius: 10px;
+  font-size: 1.2rem;
+  padding: 15px 30px;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 0 20px #ff7518;
   transition: transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 0 10px #ff7518;
 }
 
-button:hover {
+.level-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 40px #ff7518;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  box-shadow: 0 0 20px #ffb347;
 }

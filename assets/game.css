@@ -1,3 +1,6 @@
+/* ======= ESTILO GERAL ======= */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
 body {
   background-color: #1a001f;
   color: #fff;
@@ -5,21 +8,36 @@ body {
   text-align: center;
   margin: 0;
   padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1 {
   color: #ff7518;
   text-shadow: 0 0 10px #ff7518;
+  margin-bottom: 10px;
 }
 
+h2 {
+  color: #ffb347;
+  text-shadow: 0 0 8px #ffb347;
+  margin-top: 0;
+}
+
+/* ======= TABULEIRO ======= */
 #game-board {
   display: grid;
-  grid-template-columns: repeat(4, 100px);
-  grid-gap: 15px;
   justify-content: center;
+  align-content: center;
+  gap: 10px;
   margin-top: 30px;
+  perspective: 1000px;
+  transition: all 0.3s ease-in-out;
 }
 
+/* ======= CARTAS ======= */
 .card {
   width: 100px;
   height: 100px;
@@ -30,30 +48,58 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40px;
-  transition: transform 0.4s, opacity 0.3s;
+  font-size: 2.2rem;
   transform-style: preserve-3d;
+  transition: transform 0.5s;
+  box-shadow: 0 0 15px rgba(255, 117, 24, 0.3);
 }
 
-.card span {
-  position: absolute;
-  backface-visibility: hidden;
+.card:hover {
+  transform: scale(1.05);
 }
 
-.card.flipped span {
+.card.flipped {
   transform: rotateY(180deg);
+}
+
+.card .front,
+.card .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card .back {
+  background-color: #3a003a;
+  color: #ff7518;
+  font-size: 2rem;
+  transform: rotateY(0deg);
+  box-shadow: inset 0 0 10px #ff7518;
+}
+
+.card .front {
+  transform: rotateY(180deg);
+  background-color: #ff7518;
+  color: #1a001f;
+  font-size: 2.4rem;
+  box-shadow: inset 0 0 10px #1a001f;
 }
 
 .card.hidden {
   opacity: 0;
   pointer-events: none;
   transform: scale(0);
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Copie aqui todo o seu CSS anterior do jogo e adicione abaixo: */
-
+/* ======= BOTÕES ======= */
 .controls {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .controls button {
@@ -66,10 +112,29 @@ h1 {
   cursor: pointer;
   margin: 0 10px;
   box-shadow: 0 0 10px #ff7518;
-  transition: transform 0.2s, box-shadow 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s;
 }
 
 .controls button:hover {
   transform: scale(1.1);
   box-shadow: 0 0 20px #ff7518;
+  background-color: #ff8c42;
+}
+
+/* ======= RESPONSIVIDADE ======= */
+@media (max-width: 600px) {
+  #game-board {
+    gap: 8px;
+  }
+
+  .card {
+    width: 80px;
+    height: 80px;
+    font-size: 1.8rem;
+  }
+
+  .controls button {
+    font-size: 0.9rem;
+    padding: 8px 18px;
+  }
 }
