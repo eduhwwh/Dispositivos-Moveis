@@ -1,37 +1,36 @@
-// Carregar configurações ao abrir a página
-window.addEventListener("DOMContentLoaded", () => {
-  const soundToggle = document.getElementById("sound-toggle");
-  const modeSelect = document.getElementById("mode-select");
+const btnSom = document.getElementById('toggle-sound');
+const btnVoltar = document.getElementById('resume-game');
+const btnReiniciar = document.getElementById('restart-game');
+const btnMenu = document.getElementById('home-menu');
 
-  // Carregar valores salvos
-  const sound = localStorage.getItem("sound") || "on";
-  const mode = localStorage.getItem("mode") || "normal";
+// Lê configuração do som do localStorage
+let somAtivo = localStorage.getItem('somAtivo');
+if (somAtivo === null) somAtivo = 'true'; // padrão: som ligado
+atualizarTextoBotao();
 
-  soundToggle.value = sound;
-  modeSelect.value = mode;
+function atualizarTextoBotao() {
+  btnSom.textContent = somAtivo === 'true' ? '🔊 Som: Ativado' : '🔇 Som: Desativado';
+}
 
-  // Eventos de mudança
-  soundToggle.addEventListener("change", () => {
-    localStorage.setItem("sound", soundToggle.value);
-  });
+// Alterna som
+btnSom.addEventListener('click', () => {
+  somAtivo = somAtivo === 'true' ? 'false' : 'true';
+  localStorage.setItem('somAtivo', somAtivo);
+  atualizarTextoBotao();
+});
 
-  modeSelect.addEventListener("change", () => {
-    localStorage.setItem("mode", modeSelect.value);
-  });
+// Voltar ao jogo
+btnVoltar.addEventListener('click', () => {
+  window.location.href = 'game.html';
+});
 
-  // Botão: voltar ao jogo
-  document.getElementById("resume-game").addEventListener("click", () => {
-    window.location.href = "game.html";
-  });
+// Reiniciar jogo
+btnReiniciar.addEventListener('click', () => {
+  localStorage.setItem('reiniciar', 'true'); // game.js vai detectar isso
+  window.location.href = 'game.html';
+});
 
-  // Botão: reiniciar
-  document.getElementById("restart-game").addEventListener("click", () => {
-    localStorage.removeItem("gameState");
-    window.location.href = "game.html";
-  });
-
-  // Botão: voltar ao menu inicial
-  document.getElementById("home-btn").addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
+// Menu inicial
+btnMenu.addEventListener('click', () => {
+  window.location.href = 'index.html';
 });

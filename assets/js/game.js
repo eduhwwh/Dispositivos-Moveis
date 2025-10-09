@@ -1,9 +1,11 @@
+// game.js (substituir completo)
 const board = document.getElementById('game-board');
 const restartBtn = document.getElementById('restart-btn');
 const levelDisplay = document.getElementById('level-display');
 const message = document.getElementById('message');
-const timerDisplay = document.getElementById('timer');
-const attemptsDisplay = document.getElementById('attempts-display');
+
+const timerDisplay = document.getElementById('timer');           // precisa existir no HTML
+const attemptsDisplay = document.getElementById('attempts-display'); // precisa existir no HTML
 
 const soundAcerto = document.getElementById('sound-acerto');
 const soundErro = document.getElementById('sound-erro');
@@ -13,19 +15,20 @@ let level = 1;
 let cards = [];
 let flippedCards = [];
 let lockBoard = false;
-let tempoMostra = 3000;
+let tempoMostra = 3000; // 3 segundos conforme pedido
 let tempoRestante = 60;
 let timer = null;
 let tentativas = 0;
-let modoComTempo = localStorage.getItem('mode') === 'tempo';
-let somAtivo = localStorage.getItem('sound') !== 'off';
+
+// lê o modo definido na index (localStorage: 'modoJogo' === 'tempo' ou 'normal')
+const modoComTempo = localStorage.getItem('modoJogo') === 'tempo';
 
 function criarCartas() {
   board.innerHTML = "";
   cards = [];
   flippedCards = [];
   lockBoard = false;
-  tentativas = tentativas || 0;
+  tentativas = 0;
   attemptsDisplay.textContent = `Tentativas: ${tentativas}`;
 
   const emojis = [
@@ -38,7 +41,8 @@ function criarCartas() {
   if (qtdPares > emojis.length) qtdPares = emojis.length;
 
   const selecionados = emojis.slice(0, qtdPares);
-  const cartas = [...selecionados, ...selecionados].sort(() => 0.5 - Math.random());
+  const cartas = [...selecionados, ...selecionados];
+  cartas.sort(() => 0.5 - Math.random());
 
   const total = cartas.length;
   let colunas = Math.ceil(Math.sqrt(total));
@@ -55,7 +59,10 @@ function criarCartas() {
     const card = document.createElement("div");
     card.classList.add("card");
     card.dataset.emoji = emoji;
-    card.innerHTML = `<div class="front">${emoji}</div><div class="back">🎩</div>`;
+    card.innerHTML = `
+      <div class="front">${emoji}</div>
+      <div class="back">🎩</div>
+    `;
     card.addEventListener("click", virarCarta);
     board.appendChild(card);
     cards.push(card);
@@ -63,37 +70,39 @@ function criarCartas() {
 
   atualizarNivel();
 
+  // mostra por X ms e só depois inicia, se estiver no modo com tempo
   mostrarTodasTemporariamente(() => {
+    // callback executado após o reveal
     if (modoComTempo) {
-      iniciarTimer();
+      iniciarTimer(); // inicia APÓS as 3s
       timerDisplay.style.display = 'inline-block';
     } else {
+      // esconde timer no modo normal
       timerDisplay.style.display = 'none';
       clearInterval(timer);
     }
   });
-
-  salvarProgresso();
 }
 
 function mostrarTodasTemporariamente(callback) {
-  cards.forEach(c => c.classList.add("flipped"));
+  cards.forEach((card) => card.classList.add("flipped"));
   setTimeout(() => {
-    cards.forEach(c => c.classList.remove("flipped"));
+    cards.forEach((card) => card.classList.remove("flipped"));
     if (typeof callback === 'function') callback();
   }, tempoMostra);
 }
 
 function virarCarta() {
   if (lockBoard || this.classList.contains('matched') || this.classList.contains('flipped')) return;
+
   this.classList.add("flipped");
   flippedCards.push(this);
 
   if (flippedCards.length === 2) {
+    // conta tentativa por par virado
     tentativas++;
     attemptsDisplay.textContent = `Tentativas: ${tentativas}`;
     checarPar();
-    salvarProgresso();
   }
 }
 
@@ -102,20 +111,19 @@ function checarPar() {
   const match = c1.dataset.emoji === c2.dataset.emoji;
 
   if (match) {
-    if (somAtivo) soundAcerto.play();
+    soundAcerto && soundAcerto.play();
     c1.classList.add("matched");
     c2.classList.add("matched");
     flippedCards = [];
     verificarVitoria();
   } else {
-    if (somAtivo) soundErro.play();
+    soundErro && soundErro.play();
     lockBoard = true;
     setTimeout(() => {
       c1.classList.remove("flipped");
       c2.classList.remove("flipped");
       flippedCards = [];
       lockBoard = false;
-      salvarProgresso();
     }, 1000);
   }
 }
@@ -125,7 +133,7 @@ function verificarVitoria() {
   if (venceu) {
     clearInterval(timer);
     setTimeout(() => {
-      if (somAtivo) soundVitoria.play();
+      soundVitoria && soundVitoria.play();
       mostrarMensagem(`🕯️ Nível ${level} completo!`);
       proximoNivel();
     }, 700);
@@ -143,7 +151,6 @@ function proximoNivel() {
   level++;
   tempoMostra = Math.max(2000, tempoMostra - 500);
   tempoRestante = 60;
-  tentativas = 0;
   setTimeout(criarCartas, 1500);
 }
 
@@ -151,19 +158,19 @@ function atualizarNivel() {
   levelDisplay.textContent = `Nível ${level}`;
 }
 
+// reiniciar
 restartBtn.addEventListener("click", () => {
-  localStorage.removeItem("gameState");
   level = 1;
   tempoMostra = 3000;
   tempoRestante = 60;
-  tentativas = 0;
   clearInterval(timer);
   criarCartas();
 });
 
+// TIMER — modo com tempo
 function iniciarTimer() {
   clearInterval(timer);
-  tempoRestante = tempoRestante || 60;
+  tempoRestante = 60;
   timerDisplay.textContent = `⏳ Tempo: ${tempoRestante}s`;
 
   timer = setInterval(() => {
@@ -174,78 +181,49 @@ function iniciarTimer() {
       revelarCartas();
       encerrarJogoPorTempo();
     }
-    salvarProgresso();
   }, 1000);
 }
 
 function revelarCartas() {
-  cards.forEach((c) => c.classList.add("flipped"));
+  cards.forEach((card) => card.classList.add("flipped"));
 }
 
 function encerrarJogoPorTempo() {
   lockBoard = true;
   mostrarMensagem(`⏰ Tempo esgotado! Tentativas: ${tentativas}`);
+  // aqui você pode mostrar também um detalhamento ou botões (reiniciar, voltar)
 }
 
-function salvarProgresso() {
-  const estado = {
-    level,
-    tentativas,
-    tempoMostra,
-    tempoRestante,
-    modoComTempo,
-    somAtivo,
-    cartas: cards.map(c => ({
-      emoji: c.dataset.emoji,
-      flipped: c.classList.contains("flipped"),
-      matched: c.classList.contains("matched")
-    }))
-  };
-  localStorage.setItem("gameState", JSON.stringify(estado));
-}
-
-function restaurarProgresso() {
-  const salvo = localStorage.getItem("gameState");
-  if (!salvo) {
-    criarCartas();
-    return;
-  }
-
-  const estado = JSON.parse(salvo);
-  level = estado.level;
-  tentativas = estado.tentativas;
-  tempoMostra = estado.tempoMostra;
-  tempoRestante = estado.tempoRestante;
-  modoComTempo = estado.modoComTempo;
-  somAtivo = estado.somAtivo;
-
-  board.innerHTML = "";
-  cards = [];
-  estado.cartas.forEach(info => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    if (info.flipped) card.classList.add("flipped");
-    if (info.matched) card.classList.add("matched");
-    card.dataset.emoji = info.emoji;
-    card.innerHTML = `<div class="front">${info.emoji}</div><div class="back">🎩</div>`;
-    card.addEventListener("click", virarCarta);
-    board.appendChild(card);
-    cards.push(card);
-  });
-
-  atualizarNivel();
-  attemptsDisplay.textContent = `Tentativas: ${tentativas}`;
-
-  if (modoComTempo) iniciarTimer();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  restaurarProgresso();
+// inicializa
+document.addEventListener('DOMContentLoaded', () => {
+  // se o index não definiu modo, assume normal
+  // (modoComTempo já foi calculado no topo a partir do localStorage)
+  criarCartas();
 });
 
-const floatingConfig = document.getElementById("floatingConfig");
-if (floatingConfig) {
-  floatingConfig.addEventListener("click", () => {
-    window.location.href = "config.html";
-  });
+document.getElementById('config-btn').addEventListener('click', () => {
+  window.location.href = 'config.html';
+});
+
+// Detecta se veio do config com reiniciar
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('reiniciar') === 'true') {
+    localStorage.removeItem('reiniciar');
+    level = 1;
+    criarCartas();
+  }
+});
+
+// Verifica se o som está desativado
+function playSound(sound) {
+  const somAtivo = localStorage.getItem('somAtivo') !== 'false';
+  if (somAtivo && sound) sound.play();
 }
+
+// Substitui as chamadas diretas como:
+// soundAcerto.play();
+// por:
+playSound(soundAcerto);
+playSound(soundErro);
+playSound(soundVitoria);
+playSound(soundAmbiente);

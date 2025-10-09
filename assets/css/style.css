@@ -1,3 +1,4 @@
+/* ======= ESTILO GERAL ======= */
 @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
 
 body {
@@ -11,6 +12,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -27,11 +30,14 @@ h2 {
   margin-bottom: 40px;
 }
 
+/* ======= BOTÕES DE NÍVEL ======= */
 .levels {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 25px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .level-btn {
@@ -45,6 +51,8 @@ h2 {
   transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s;
   box-shadow: 0 0 15px #ff7518;
   animation: pulsar 2s infinite alternate, tremer 4s infinite ease-in-out;
+  flex: 1 1 40%;
+  max-width: 220px;
 }
 
 .level-btn:hover {
@@ -72,21 +80,53 @@ h2 {
   80% { transform: translate(1px, 1px); }
 }
 
+/* ======= RESPONSIVIDADE ======= */
+
+/* Celulares médios (até 600 px) */
 @media (max-width: 600px) {
   body {
-    padding: 30px 10px;
+    padding: 30px 15px;
   }
 
   h1 {
     font-size: 2.2rem;
+    margin-bottom: 15px;
   }
 
   h2 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    margin-bottom: 25px;
   }
 
   .level-btn {
     font-size: 1.1rem;
     padding: 12px 25px;
+    max-width: 180px;
+  }
+}
+
+/* Motorola E32 e telas pequenas (até 400 px) */
+@media (max-width: 400px) {
+  body {
+    padding: 25px 10px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .levels {
+    gap: 15px;
+  }
+
+  .level-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 10px;
+    max-width: 160px;
   }
 }

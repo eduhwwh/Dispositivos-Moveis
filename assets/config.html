@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⚙️ Configurações - Sombras da Memória</title>
-  <link rel="stylesheet" href="./css/config.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurações ⚙️</title>
+  <link rel="stylesheet" href="./css/config.css" />
 </head>
 <body>
   <h1>⚙️ Configurações</h1>
 
   <div class="config-container">
-    <label for="sound-toggle">🔊 Som:</label>
-    <select id="sound-toggle">
-      <option value="on">Ativado</option>
-      <option value="off">Desativado</option>
-    </select>
-
-    <label for="mode-select">🎮 Modo de Jogo:</label>
-    <select id="mode-select">
-      <option value="normal">Normal</option>
-      <option value="tempo">Cronometrado</option>
-    </select>
-
-    <div class="buttons">
-      <button id="resume-game">▶ Voltar ao Jogo</button>
-      <button id="restart-game">🔄 Reiniciar</button>
-      <button id="home-btn">🏠 Menu Inicial</button>
-    </div>
+    <button id="toggle-sound">🔊 Som: Ativado</button>
+    <button id="resume-game">🔙 Voltar ao jogo</button>
+    <button id="restart-game">🔁 Reiniciar</button>
+    <button id="home-menu">🏠 Menu Inicial</button>
   </div>
 
   <script src="./js/config.js"></script>
