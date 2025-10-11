@@ -1,12 +1,10 @@
-// game.js (substituir completo)
 const board = document.getElementById('game-board');
 const restartBtn = document.getElementById('restart-btn');
 const levelDisplay = document.getElementById('level-display');
 const message = document.getElementById('message');
 
-const timerDisplay = document.getElementById('timer');           // precisa existir no HTML
-const attemptsDisplay = document.getElementById('attempts-display'); // precisa existir no HTML
-
+const timerDisplay = document.getElementById('timer');
+const attemptsDisplay = document.getElementById('attempts-display');
 const soundAcerto = document.getElementById('sound-acerto');
 const soundErro = document.getElementById('sound-erro');
 const soundVitoria = document.getElementById('sound-vitoria');
@@ -15,12 +13,11 @@ let level = 1;
 let cards = [];
 let flippedCards = [];
 let lockBoard = false;
-let tempoMostra = 3000; // 3 segundos conforme pedido
+let tempoMostra = 3000;
 let tempoRestante = 60;
 let timer = null;
 let tentativas = 0;
 
-// lê o modo definido na index (localStorage: 'modoJogo' === 'tempo' ou 'normal')
 const modoComTempo = localStorage.getItem('modoJogo') === 'tempo';
 
 function criarCartas() {
@@ -70,14 +67,11 @@ function criarCartas() {
 
   atualizarNivel();
 
-  // mostra por X ms e só depois inicia, se estiver no modo com tempo
   mostrarTodasTemporariamente(() => {
-    // callback executado após o reveal
     if (modoComTempo) {
-      iniciarTimer(); // inicia APÓS as 3s
+      iniciarTimer();
       timerDisplay.style.display = 'inline-block';
     } else {
-      // esconde timer no modo normal
       timerDisplay.style.display = 'none';
       clearInterval(timer);
     }
@@ -99,7 +93,6 @@ function virarCarta() {
   flippedCards.push(this);
 
   if (flippedCards.length === 2) {
-    // conta tentativa por par virado
     tentativas++;
     attemptsDisplay.textContent = `Tentativas: ${tentativas}`;
     checarPar();
@@ -191,13 +184,10 @@ function revelarCartas() {
 function encerrarJogoPorTempo() {
   lockBoard = true;
   mostrarMensagem(`⏰ Tempo esgotado! Tentativas: ${tentativas}`);
-  // aqui você pode mostrar também um detalhamento ou botões (reiniciar, voltar)
 }
 
 // inicializa
 document.addEventListener('DOMContentLoaded', () => {
-  // se o index não definiu modo, assume normal
-  // (modoComTempo já foi calculado no topo a partir do localStorage)
   criarCartas();
 });
 
@@ -214,15 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Verifica se o som está desativado
 function playSound(sound) {
   const somAtivo = localStorage.getItem('somAtivo') !== 'false';
   if (somAtivo && sound) sound.play();
 }
 
-// Substitui as chamadas diretas como:
-// soundAcerto.play();
-// por:
 playSound(soundAcerto);
 playSound(soundErro);
 playSound(soundVitoria);

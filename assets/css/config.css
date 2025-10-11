@@ -6,7 +6,7 @@ body {
   font-family: 'Creepster', cursive;
   text-align: center;
   margin: 0;
-  padding: 50px 20px; /* margem lateral reduzida para telas menores */
+  padding: 50px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,7 +69,6 @@ button:hover {
   }
 }
 
-/* Ajuste específico para o Motorola E32 e telas muito estreitas */
 @media (max-width: 400px) {
   h1 {
     font-size: 1.8rem;

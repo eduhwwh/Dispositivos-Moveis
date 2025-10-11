@@ -1,6 +1,8 @@
 /* ======= ESTILO GERAL ======= */
 @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
 
+* { box-sizing: border-box; }
+
 body {
   background-color: #1a001f;
   color: #fff;
@@ -9,28 +11,30 @@ body {
   margin: 0;
   padding: 20px;
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
+  justify-content: center;
+  overflow-x: hidden;
 }
 
+/* ======= TÍTULOS ======= */
 h1 {
   color: #ff7518;
   text-shadow: 0 0 10px #ff7518;
-  margin-bottom: 10px;
+  margin: 0 0 15px 0;
   font-size: 2.2rem;
 }
 
 h2 {
   color: #ffb347;
   text-shadow: 0 0 8px #ffb347;
-  margin-top: 0;
+  margin: 0;
   font-size: 1.4rem;
 }
 
-/* ======= HUB / LAYOUT ======= */
+/* =======LAYOUT ======= */
 #hub {
   display: flex;
   gap: 12px;
@@ -43,18 +47,22 @@ h2 {
 /* ======= TABULEIRO ======= */
 #game-board {
   display: grid;
-  justify-content: center;
-  align-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
   gap: 10px;
-  margin-top: 30px;
+  margin: 30px auto 0;
+  width: min(92vw, 420px);
+  justify-items: center;
+  align-items: center;
+  place-content: start center;
   perspective: 1000px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 /* ======= CARTAS ======= */
 .card {
-  width: 100px;
-  height: 100px;
+  --card-size: clamp(60px, 16vw, 100px);
+  width: var(--card-size);
+  height: var(--card-size);
   background-color: #3a003a;
   border-radius: 10px;
   cursor: pointer;
@@ -62,14 +70,18 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
+  font-size: calc(var(--card-size) * 0.22);
   transform-style: preserve-3d;
-  transition: transform 0.5s;
+  transition: transform 0.4s;
   box-shadow: 0 0 15px rgba(255, 117, 24, 0.3);
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
+  transform-origin: center;
 }
 
 .card.flipped {
@@ -86,12 +98,14 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 6px;
+  box-sizing: border-box;
 }
 
 .card .back {
   background-color: #3a003a;
   color: #ff7518;
-  font-size: 2rem;
+  font-size: 1.2em;
   transform: rotateY(0deg);
   box-shadow: inset 0 0 10px #ff7518;
 }
@@ -100,7 +114,7 @@ h2 {
   transform: rotateY(180deg);
   background-color: #ff7518;
   color: #1a001f;
-  font-size: 2.4rem;
+  font-size: 1.4em;
   box-shadow: inset 0 0 10px #1a001f;
 }
 
@@ -108,12 +122,12 @@ h2 {
   opacity: 0;
   pointer-events: none;
   transform: scale(0);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 /* ======= BOTÕES ======= */
 .controls {
-  margin-top: 25px;
+  margin-top: 30px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -129,69 +143,44 @@ h2 {
   border-radius: 10px;
   cursor: pointer;
   box-shadow: 0 0 10px #ff7518;
-  transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s;
+  transition: transform 0.15s, box-shadow 0.2s, background-color 0.2s;
 }
 
 .controls button:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
   box-shadow: 0 0 20px #ff7518;
   background-color: #ff8c42;
 }
 
 /* ======= RESPONSIVIDADE ======= */
-
-/* Tablets e celulares médios */
 @media (max-width: 600px) {
+  h1 { font-size: 1.9rem; }
+  h2 { font-size: 1.2rem; }
+
   #game-board {
     gap: 8px;
+    width: min(96vw, 380px);
   }
 
-  .card {
-    width: 80px;
-    height: 80px;
-    font-size: 1.8rem;
-  }
+  .card { --card-size: clamp(56px, 16vw, 90px); font-size: calc(var(--card-size) * 0.22); }
 
-  h1 {
-    font-size: 1.9rem;
-  }
-
-  .controls button {
-    font-size: 0.9rem;
-    padding: 8px 18px;
-  }
+  .controls button { font-size: 0.95rem; padding: 8px 18px; }
 }
 
-/* Motorola E32 e telas muito estreitas */
 @media (max-width: 400px) {
-  body {
-    padding: 15px 10px;
-    justify-content: center; /* ✅ centraliza verticalmente */
-  }
+  body { padding: 12px 10px; }
 
-  h1 {
-    font-size: 1.7rem;
-    margin-bottom: 5px;
-  }
-
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  .card {
-    width: 70px;
-    height: 70px;
-    font-size: 1.6rem;
-  }
+  h1 { font-size: 1.7rem; margin-bottom: 10px; }
+  h2 { font-size: 1.1rem; }
 
   #game-board {
     gap: 6px;
+    width: min(98vw, 320px);
+    grid-template-columns: repeat(3, 1fr);
     margin-top: 15px;
   }
 
-  .controls button {
-    font-size: 0.85rem;
-    padding: 7px 15px;
-    border-radius: 8px;
-  }
+  .card { --card-size: clamp(50px, 18vw, 72px); font-size: calc(var(--card-size) * 0.22); }
+
+  .controls button { font-size: 0.85rem; padding: 7px 14px; border-radius: 8px; }
 }
